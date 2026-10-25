@@ -1,0 +1,37 @@
+name: Check prices
+
+on:
+  schedule:
+    - cron: "17 * * * *"     # every hour, at 17 minutes past
+  workflow_dispatch:          # adds a "Run workflow" button on GitHub
+  push:
+    paths: ["watchlist.csv"]  # check right away when you change the watchlist
+
+permissions:
+  contents: write             # lets the job save new prices back to the repo
+
+concurrency:
+  group: check-prices
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Check prices
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          MOVE_THRESHOLD_PCT: ${{ vars.MOVE_THRESHOLD_PCT || '3' }}
+        run: python check_prices.py
+      - name: Save new prices to the repo
+        run: |
+          git config user.name "price-tracker bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet || git commit -m "Price check $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git pull --rebase --quiet
+          git push

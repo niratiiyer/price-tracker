@@ -1,0 +1,6 @@
+coin_id,symbol,name,alert_below,alert_above
+bitcoin,BTC,Bitcoin,75000,90000
+ethereum,ETH,Ethereum,2100,2600
+solana,SOL,Solana,90,115
+ripple,XRP,XRP,1.15,1.45
+dogecoin,DOGE,Dogecoin,0.068,0.088
