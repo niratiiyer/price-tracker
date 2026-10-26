@@ -2,11 +2,13 @@
 
 Hourly crypto price checks with alerts.
 
-A GitHub Action pulls prices from CoinGecko every hour, appends them to `data/prices.csv`, and posts to
-Discord when:
+A GitHub Action pulls prices from CoinGecko every hour, appends them to `data/prices.csv`, and logs an
+alert to `data/alerts.csv` when:
 
 - a price drops below or rises above a level set in `watchlist.csv`
 - a price moves 3% or more since the previous check
+
+Alerts show up on the dashboard. They can also be posted to Discord (see below).
 
 `dashboard.py` is a Streamlit app that shows current prices, a chart per coin, the largest moves, and past alerts.
 
@@ -31,7 +33,7 @@ streamlit run dashboard.py
 pytest
 ```
 
-Set `DISCORD_WEBHOOK_URL` to post alerts, and `MOVE_THRESHOLD_PCT` to change the 3%. In Actions these are a
+Set `DISCORD_WEBHOOK_URL` to post alerts to Discord, and `MOVE_THRESHOLD_PCT` to change the 3%. In Actions these are a
 repo secret and a repo variable.
 
 ## Watchlist
