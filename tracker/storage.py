@@ -1,4 +1,3 @@
-"""Read the watchlist and read/append the price and alert history CSVs."""
 import csv
 from dataclasses import dataclass
 from pathlib import Path
@@ -41,7 +40,6 @@ def load_watchlist(path: Path = WATCHLIST_FILE) -> list[Coin]:
 
 
 def last_prices(path: Path = PRICES_FILE) -> dict[str, float]:
-    """The most recent recorded price for each coin."""
     latest: dict[str, float] = {}
     if not path.exists():
         return latest

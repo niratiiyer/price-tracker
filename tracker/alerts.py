@@ -1,4 +1,3 @@
-"""Send alerts to a Discord channel via a webhook, or just print them if no webhook is set."""
 import json
 import os
 import urllib.request

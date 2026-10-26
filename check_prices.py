@@ -1,7 +1,3 @@
-"""Check every coin's price once, save it, and send alerts. GitHub Actions runs this every hour.
-
-    python check_prices.py
-"""
 import sys
 from datetime import datetime, timezone
 

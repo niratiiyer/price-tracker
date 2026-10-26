@@ -1,4 +1,3 @@
-"""Crypto market monitor dashboard.  Run locally with:  streamlit run dashboard.py"""
 from datetime import timedelta
 
 import altair as alt
@@ -34,14 +33,12 @@ latest = prices.sort_values("checked_at").groupby("coin_id").tail(1).set_index("
 last_check = prices["checked_at"].max()
 week_ago = last_check - timedelta(days=7)
 
-# --- headline numbers ---
 col1, col2, col3, col4 = st.columns(4)
 col1.metric("Coins watched", len(watchlist))
 col2.metric("Price checks recorded", f"{prices['checked_at'].nunique():,}")
 col3.metric("Unusual moves flagged (7 days)", int(((alerts["kind"] == "move") & (alerts["checked_at"] >= week_ago)).sum()))
 col4.metric("Last checked", last_check.strftime("%b %-d, %-I:%M %p"))
 
-# --- current prices ---
 rows = []
 for c in watchlist.itertuples():
     if c.coin_id not in latest.index:
@@ -67,7 +64,6 @@ for c in watchlist.itertuples():
 pct_cols = {c: st.column_config.NumberColumn(format="percent") for c in ["Since last check", "24h"]}
 st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True, column_config=pct_cols)
 
-# --- chart ---
 st.subheader("Price history")
 names = {f"{c.name} ({c.symbol})": c for c in watchlist.itertuples()}
 choice = st.selectbox("Coin", list(names))
@@ -96,7 +92,6 @@ if not levels.empty:
     )
 st.altair_chart(chart, use_container_width=True)
 
-# --- biggest moves and alert log ---
 left, right = st.columns(2)
 with left:
     st.subheader("Biggest moves between checks")

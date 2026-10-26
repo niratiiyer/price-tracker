@@ -1,12 +1,11 @@
-"""The decision rules, kept separate from the network code so they're easy to test."""
 import os
 
-# Flag a move of at least this many percent since the previous check (default 3%).
+
 def move_threshold_pct() -> float:
     return float(os.environ.get("MOVE_THRESHOLD_PCT", "3"))
 
 
-# A move this large between two checks is more likely bad data than a real price.
+# anything this big between two hourly checks is almost certainly bad data
 GLITCH_MOVE_PCT = 50.0
 
 
@@ -24,21 +23,19 @@ def looks_like_glitch(price: float, previous: float | None) -> bool:
 
 
 def crossed_below(price: float, previous: float | None, level: float | None) -> bool:
-    """True only on the check where the price first falls to or below the level."""
+    # only true on the check where it crosses, not every check after
     if level is None or price > level:
         return False
     return previous is None or previous > level
 
 
 def crossed_above(price: float, previous: float | None, level: float | None) -> bool:
-    """True only on the check where the price first rises to or above the level."""
     if level is None or price < level:
         return False
     return previous is None or previous < level
 
 
 def unusual_move(price: float, previous: float | None, threshold_pct: float | None = None) -> float | None:
-    """The % change if it's at least the threshold (up or down), otherwise None."""
     threshold = move_threshold_pct() if threshold_pct is None else threshold_pct
     change = pct_change(price, previous)
     if change is None or abs(change) < threshold:

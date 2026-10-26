@@ -7,11 +7,10 @@ from tracker.rules import crossed_above, crossed_below, looks_like_glitch, pct_c
 from tracker.storage import append_rows, last_prices, load_watchlist
 
 
-# --- level alerts fire once, on the crossing ---
 
 def test_alert_when_price_first_falls_below_level():
     assert crossed_below(74_900, previous=76_000, level=75_000)
-    assert crossed_below(75_000, previous=76_000, level=75_000)  # touching the level counts
+    assert crossed_below(75_000, previous=76_000, level=75_000)
 
 
 def test_no_repeat_alert_while_price_stays_below():
@@ -34,7 +33,6 @@ def test_blank_level_means_no_alert():
     assert not crossed_above(1000, previous=1, level=None)
 
 
-# --- unusual moves ---
 
 def test_unusual_move_flags_big_moves_both_ways():
     assert round(unusual_move(103.5, 100, threshold_pct=3), 2) == 3.5
@@ -51,16 +49,15 @@ def test_threshold_comes_from_environment(monkeypatch):
     assert unusual_move(101.5, 100) is not None
 
 
-# --- bad data ---
 
 def test_glitches_are_caught():
     assert looks_like_glitch(0, previous=80_000)
-    assert looks_like_glitch(800, previous=80_000)        # -99% in one check
-    assert looks_like_glitch(200_000, previous=80_000)    # +150% in one check
+    assert looks_like_glitch(800, previous=80_000)
+    assert looks_like_glitch(200_000, previous=80_000)
 
 
 def test_real_moves_are_not_glitches():
-    assert not looks_like_glitch(72_000, previous=80_000)  # -10% is a big but real move
+    assert not looks_like_glitch(72_000, previous=80_000)
     assert not looks_like_glitch(80_000, previous=None)
 
 
@@ -69,7 +66,6 @@ def test_pct_change():
     assert pct_change(5, None) is None
 
 
-# --- parsing and formatting ---
 
 def test_parse_response_reports_missing_coins():
     data = {"bitcoin": {"usd": 80349, "usd_24h_change": 1.5, "last_updated_at": 1792964593}}
@@ -85,7 +81,6 @@ def test_money_formatting():
     assert money(0.0682) == "$0.0682"
 
 
-# --- files ---
 
 def test_watchlist_with_blank_levels(tmp_path):
     path = tmp_path / "watchlist.csv"
@@ -103,7 +98,6 @@ def test_history_round_trip(tmp_path):
     assert len(list(csv.DictReader(open(path)))) == 2
 
 
-# --- a full run, with CoinGecko faked ---
 
 def test_full_run_records_prices_and_alerts(tmp_path, monkeypatch, capsys):
     watchlist = tmp_path / "watchlist.csv"
@@ -120,11 +114,11 @@ def test_full_run_records_prices_and_alerts(tmp_path, monkeypatch, capsys):
                             lambda ids: ({"bitcoin": Quote("bitcoin", price, 0.0, 0)}, {}))
 
     fake_market(80_000)
-    assert check_prices.main() == 0          # first check: nothing to compare against
+    assert check_prices.main() == 0
     fake_market(74_000)
-    assert check_prices.main() == 0          # -7.5%: below the level AND an unusual move
+    assert check_prices.main() == 0  # -7.5%: crosses the level and is a big move
     fake_market(73_500)
-    assert check_prices.main() == 0          # still below, small move: no new alerts
+    assert check_prices.main() == 0  # still below, small move, so nothing new
 
     kinds = [row["kind"] for row in csv.DictReader(open(alerts))]
     assert kinds == ["below", "move"]

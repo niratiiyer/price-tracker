@@ -2,13 +2,13 @@ name: Check prices
 
 on:
   schedule:
-    - cron: "17 * * * *"     # every hour, at 17 minutes past
-  workflow_dispatch:          # adds a "Run workflow" button on GitHub
+    - cron: "17 * * * *"
+  workflow_dispatch:
   push:
-    paths: ["watchlist.csv"]  # check right away when you change the watchlist
+    paths: ["watchlist.csv"]
 
 permissions:
-  contents: write             # lets the job save new prices back to the repo
+  contents: write
 
 concurrency:
   group: check-prices
@@ -29,23 +29,22 @@ jobs:
         run: |
           git config user.name "price-tracker bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # If another check saved prices while this one was running, the push is rejected.
-          # Then start over from the newest data, so the "% since last check" and alerts stay correct.
+          # if another run pushed first, redo the check on top of its data
           for attempt in 1 2 3; do
             git fetch --quiet origin main
             git reset --quiet --hard origin/main
             python check_prices.py
             git add data/
             if git diff --cached --quiet; then
-              echo "Nothing new to save."
+              echo "nothing to save"
               exit 0
             fi
             git commit --quiet -m "Price check $(date -u +'%Y-%m-%d %H:%M UTC')"
             if git push --quiet origin HEAD:main; then
               exit 0
             fi
-            echo "Another check saved prices first; redoing this check on the latest data (attempt $attempt)."
+            echo "push rejected, retrying ($attempt)"
             sleep $((attempt * 5))
           done
-          echo "Couldn't save prices after 3 attempts."
+          echo "gave up after 3 attempts"
           exit 1

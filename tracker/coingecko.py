@@ -1,4 +1,3 @@
-"""Fetch current prices from CoinGecko's free public API (no key needed)."""
 import json
 import urllib.request
 from dataclasses import dataclass
@@ -12,13 +11,12 @@ API_URL = (
 @dataclass
 class Quote:
     coin_id: str
-    price: float          # US dollars
-    change_24h_pct: float  # CoinGecko's own 24-hour change, in percent
-    updated_at: int        # when CoinGecko last updated this price (Unix seconds)
+    price: float
+    change_24h_pct: float
+    updated_at: int  # unix seconds
 
 
 def parse_response(data: dict, coin_ids: list[str]) -> tuple[dict[str, Quote], dict[str, str]]:
-    """Turn CoinGecko's JSON into quotes, plus a reason for every coin we couldn't price."""
     quotes, problems = {}, {}
     for coin_id in coin_ids:
         entry = data.get(coin_id)
