@@ -22,7 +22,7 @@ def main() -> int:
     try:
         quotes, problems = fetch_prices([c.coin_id for c in coins])
     except Exception as exc:
-        send_alert(f"⚠️ Price check failed: couldn't reach CoinGecko ({exc})")
+        send_alert(f"Price check failed: couldn't reach CoinGecko ({exc})")
         return 1
 
     price_rows, alert_rows = [], []
@@ -56,15 +56,14 @@ def main() -> int:
 
         if crossed_below(price, before, coin.alert_below):
             alert(coin, "below", price, f"level {money(coin.alert_below)}",
-                  f"📉 {coin.name} ({coin.symbol}) fell to {money(price)}, below your {money(coin.alert_below)} level.")
+                  f"{coin.name} ({coin.symbol}) fell to {money(price)}, below your {money(coin.alert_below)} level.")
         if crossed_above(price, before, coin.alert_above):
             alert(coin, "above", price, f"level {money(coin.alert_above)}",
-                  f"📈 {coin.name} ({coin.symbol}) rose to {money(price)}, above your {money(coin.alert_above)} level.")
+                  f"{coin.name} ({coin.symbol}) rose to {money(price)}, above your {money(coin.alert_above)} level.")
         move = unusual_move(price, before)
         if move is not None:
-            arrow = "🚀" if move > 0 else "🔻"
             alert(coin, "move", price, f"{move:.2f}%",
-                  f"{arrow} Unusual move: {coin.name} ({coin.symbol}) {pct(move)} since the last check "
+                  f"Unusual move: {coin.name} ({coin.symbol}) {pct(move)} since the last check "
                   f"({money(before)} → {money(price)}).")
 
     append_rows(price_rows, PRICES_FILE, PRICE_COLUMNS)

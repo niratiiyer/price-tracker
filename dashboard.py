@@ -11,11 +11,11 @@ from tracker.storage import ALERTS_FILE, PRICES_FILE, WATCHLIST_FILE
 
 TZ = "America/New_York"
 
-st.set_page_config(page_title="Crypto Market Monitor", page_icon="📈", layout="wide")
-st.title("📈 Crypto Market Monitor")
+st.set_page_config(page_title="Crypto Market Monitor", layout="wide")
+st.title("Crypto Market Monitor")
 st.caption(
     f"Prices from CoinGecko, checked automatically every hour. Alerts fire when a price crosses one of your "
-    f"levels, or moves more than {move_threshold_pct():g}% between two checks."
+    f"levels or moves more than {move_threshold_pct():g}% between two checks."
 )
 
 watchlist = pd.read_csv(WATCHLIST_FILE)
@@ -50,9 +50,9 @@ for c in watchlist.itertuples():
     below = c.alert_below if pd.notna(c.alert_below) else None
     above = c.alert_above if pd.notna(c.alert_above) else None
     if below is not None and now.price <= below:
-        status = "🔻 Below your level"
+        status = "Below your level"
     elif above is not None and now.price >= above:
-        status = "🚀 Above your level"
+        status = "Above your level"
     else:
         status = "Within range"
     rows.append({
@@ -95,7 +95,6 @@ if not levels.empty:
         color=alt.Color("kind:N", title=None, scale=alt.Scale(domain=["Alert below", "Alert above"], range=["#d62728", "#2ca02c"])),
     )
 st.altair_chart(chart, use_container_width=True)
-st.caption("Dashed lines: your alert levels.")
 
 # --- biggest moves and alert log ---
 left, right = st.columns(2)
@@ -122,7 +121,7 @@ with right:
     if alerts.empty:
         st.write("No alerts yet.")
     else:
-        labels = {"below": "🔻 Fell below level", "above": "🚀 Rose above level", "move": "⚡ Unusual move"}
+        labels = {"below": "Fell below level", "above": "Rose above level", "move": "Unusual move"}
         recent = alerts.sort_values("checked_at", ascending=False).head(20)
         st.dataframe(
             pd.DataFrame({
@@ -137,9 +136,7 @@ with right:
 
 with st.expander("How to add coins or change alert levels"):
     st.markdown(
-        "1. Find the coin on [coingecko.com](https://www.coingecko.com). Its **API id** is listed on the coin's page "
-        "(e.g. Bitcoin → `bitcoin`, XRP → `ripple`).\n"
-        "2. On GitHub, open `watchlist.csv`, click the ✏️ pencil, and add a line like "
-        "`cardano,ADA,Cardano,0.50,0.80` (id, symbol, name, alert below, alert above). Leave a level blank to skip it.\n"
-        "3. Click **Commit changes**. The coin is checked right away and then every hour."
+        "Edit `watchlist.csv`. Format: `coin_id,symbol,name,alert_below,alert_above`\n\n"
+        "Example: `cardano,ADA,Cardano,0.50,0.80`\n\n"
+        "`coin_id` is on the coin's CoinGecko page."
     )
