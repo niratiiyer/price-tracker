@@ -7,3 +7,8 @@ checked_at,coin_id,symbol,kind,price,detail
 2026-11-04T15:04:13+00:00,solana,SOL,move,95.5,3.14%
 2026-11-04T15:04:13+00:00,ripple,XRP,move,1.32,3.13%
 2026-11-04T15:04:13+00:00,dogecoin,DOGE,move,0.077051,3.08%
+2026-11-05T15:12:50+00:00,bitcoin,BTC,move,77064.0,-3.23%
+2026-11-05T15:12:50+00:00,ethereum,ETH,move,2291.41,-4.05%
+2026-11-05T15:12:50+00:00,solana,SOL,move,91.15,-4.43%
+2026-11-05T15:12:50+00:00,ripple,XRP,move,1.26,-3.82%
+2026-11-05T15:12:50+00:00,dogecoin,DOGE,move,0.072838,-4.06%
