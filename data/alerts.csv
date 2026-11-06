@@ -14,3 +14,4 @@ checked_at,coin_id,symbol,kind,price,detail
 2026-11-05T15:12:50+00:00,dogecoin,DOGE,move,0.072838,-4.06%
 2026-11-05T17:59:08+00:00,solana,SOL,below,89.02,level $90.00
 2026-11-06T04:08:07+00:00,solana,SOL,below,89.42,level $90.00
+2026-11-06T11:17:37+00:00,solana,SOL,below,89.96,level $90.00
