@@ -18,3 +18,4 @@ checked_at,coin_id,symbol,kind,price,detail
 2026-11-06T17:57:25+00:00,solana,SOL,below,89.62,level $90.00
 2026-11-06T19:59:52+00:00,solana,SOL,below,89.93,level $90.00
 2026-11-07T04:03:34+00:00,solana,SOL,below,89.92,level $90.00
+2026-11-07T05:02:40+00:00,ripple,XRP,below,1.15,level $1.15
