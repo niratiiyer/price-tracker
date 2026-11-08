@@ -25,3 +25,5 @@ checked_at,coin_id,symbol,kind,price,detail
 2026-11-07T20:51:53+00:00,ripple,XRP,below,1.15,level $1.15
 2026-11-08T15:50:44+00:00,ripple,XRP,below,1.15,level $1.15
 2026-11-08T19:55:23+00:00,ripple,XRP,below,1.15,level $1.15
+2026-11-08T22:50:02+00:00,bitcoin,BTC,below,74245.0,"level $75,000.00"
+2026-11-08T22:50:02+00:00,ethereum,ETH,move,2120.1,-4.18%
