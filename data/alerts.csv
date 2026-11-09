@@ -28,3 +28,4 @@ checked_at,coin_id,symbol,kind,price,detail
 2026-11-08T22:50:02+00:00,bitcoin,BTC,below,74245.0,"level $75,000.00"
 2026-11-08T22:50:02+00:00,ethereum,ETH,move,2120.1,-4.18%
 2026-11-09T04:12:55+00:00,bitcoin,BTC,below,74922.0,"level $75,000.00"
+2026-11-09T07:42:36+00:00,ethereum,ETH,below,2095.85,"level $2,100.00"
