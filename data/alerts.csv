@@ -37,3 +37,4 @@ checked_at,coin_id,symbol,kind,price,detail
 2026-11-10T16:02:19+00:00,dogecoin,DOGE,below,0.067565,level $0.068
 2026-11-10T16:02:19+00:00,dogecoin,DOGE,move,0.067565,-3.11%
 2026-11-11T05:14:37+00:00,dogecoin,DOGE,below,0.067998,level $0.068
+2026-11-11T07:39:42+00:00,dogecoin,DOGE,below,0.067775,level $0.068
